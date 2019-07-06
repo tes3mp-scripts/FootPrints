@@ -106,6 +106,12 @@ function FootPrintsPlayerTimer(pid)
     }
 
     local cellDescription = tes3mp.GetCell(pid)
+    local unload = false
+
+    if LoadedCells[cellDescription] == nil then
+       logicHandler.LoadCell(cellDescription)
+       unload = true
+    end
 
     local uniqueIndex = logicHandler.CreateObjectAtLocation(
         cellDescription,
@@ -120,6 +126,10 @@ function FootPrintsPlayerTimer(pid)
     })
 
     tes3mp.RestartTimer(FootPrints.timers[pid], time.seconds(FootPrints.config.interval))
+
+    if unload then
+       logicHandler.UnloadCell(cellDescription)
+    end
 end
 
 
